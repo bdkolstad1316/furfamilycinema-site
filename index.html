@@ -1542,7 +1542,7 @@ footer {
 <div class="ticker-bar">
   <div class="ticker-content">
     <span>🐾 24/7 ON-SITE CARE</span>
-    <span>⭐ 4.9 STARS ON GOOGLE</span>
+    <span id="google-rating">⭐ 4.8 STARS ON GOOGLE</span>
     <span>🏠 LOCALLY OWNED</span>
     <span>🐕 1 ACRE PLAY YARD</span>
     <span>🐈 PRIVATE CAT SUITES</span>
@@ -2227,6 +2227,45 @@ window.addEventListener('scroll', () => {
   }
   lastScroll = currentScroll;
 });
+
+// ========== DYNAMIC GOOGLE RATING ==========
+(function() {
+  const GOOGLE_API_KEY = ''; // <-- ADD YOUR API KEY HERE
+  const PLACE_QUERY = 'Fur Family Cinema Lewiston ID';
+  const ratingEl = document.getElementById('google-rating');
+  if (!ratingEl || !GOOGLE_API_KEY) return;
+
+  // Check cache first (refresh once per day)
+  const cached = sessionStorage.getItem('ffc-rating');
+  const cachedTime = sessionStorage.getItem('ffc-rating-time');
+  if (cached && cachedTime && (Date.now() - parseInt(cachedTime)) < 86400000) {
+    ratingEl.textContent = '\u2B50 ' + cached + ' STARS ON GOOGLE';
+    return;
+  }
+
+  // Fetch from Google Places API (New)
+  fetch('https://places.googleapis.com/v1/places:searchText', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Goog-Api-Key': GOOGLE_API_KEY,
+      'X-Goog-FieldMask': 'places.rating,places.userRatingCount'
+    },
+    body: JSON.stringify({ textQuery: PLACE_QUERY })
+  })
+  .then(r => r.json())
+  .then(data => {
+    if (data.places && data.places[0] && data.places[0].rating) {
+      const rating = data.places[0].rating;
+      const count = data.places[0].userRatingCount || '';
+      const display = rating.toFixed(1);
+      ratingEl.textContent = '\u2B50 ' + display + ' STARS ON GOOGLE' + (count ? ' (' + count + ' REVIEWS)' : '');
+      sessionStorage.setItem('ffc-rating', display);
+      sessionStorage.setItem('ffc-rating-time', Date.now().toString());
+    }
+  })
+  .catch(() => {}); // Silently fail, keep fallback
+})();
 
 // ========== POSTER CAROUSEL ==========
 (function() {
