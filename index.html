@@ -375,6 +375,174 @@ nav .cta-btn:hover {
   box-shadow: 0 10px 30px rgba(245, 197, 24, 0.3);
 }
 
+/* ========== PET MOVIE POSTER CAROUSEL ========== */
+.poster-carousel-section {
+  padding: 3rem 0 1rem;
+  background: linear-gradient(180deg, var(--dark-bg) 0%, #0a0a12 100%);
+  overflow: hidden;
+  position: relative;
+}
+.poster-carousel-section .section-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding: 0 2rem;
+}
+.poster-carousel-wrapper {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 3rem;
+}
+.poster-carousel-track {
+  display: flex;
+  gap: 1.5rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 1rem 0 2rem;
+  scroll-snap-type: x mandatory;
+}
+.poster-carousel-track::-webkit-scrollbar { display: none; }
+.poster-card {
+  flex: 0 0 280px;
+  scroll-snap-align: center;
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.6), 0 0 15px rgba(60,188,180,0.15);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  cursor: pointer;
+  aspect-ratio: 2/3;
+}
+.poster-card:hover {
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.7), 0 0 30px rgba(60,188,180,0.3);
+}
+.poster-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.poster-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1.5rem;
+  background: linear-gradient(0deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 40%, transparent 70%);
+}
+.poster-genre {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 0.75rem;
+  letter-spacing: 4px;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 0.3rem;
+}
+.poster-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: #fff;
+  line-height: 1.15;
+  margin-bottom: 0.3rem;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+}
+.poster-tagline {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.7);
+  font-style: italic;
+}
+.poster-rating {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(0,0,0,0.7);
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  font-family: 'Bebas Neue', cursive;
+  font-size: 0.7rem;
+  letter-spacing: 2px;
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+.poster-stars {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  color: #FFD700;
+  font-size: 0.75rem;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+}
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(17,8,51,0.85);
+  border: 2px solid var(--gold);
+  color: var(--gold);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.carousel-btn:hover {
+  background: var(--gold);
+  color: var(--dark-bg);
+  box-shadow: 0 0 20px rgba(60,188,180,0.4);
+}
+.carousel-btn.prev { left: 0; }
+.carousel-btn.next { right: 0; }
+.poster-carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  padding: 0.5rem 0 1rem;
+}
+.poster-carousel-dots .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(60,188,180,0.3);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.poster-carousel-dots .dot.active {
+  background: var(--gold);
+  box-shadow: 0 0 8px rgba(60,188,180,0.5);
+  transform: scale(1.3);
+}
+.poster-cta-line {
+  text-align: center;
+  padding: 0.5rem 2rem 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  color: rgba(240,230,211,0.6);
+}
+.poster-cta-line a {
+  color: var(--gold);
+  text-decoration: underline;
+  transition: color 0.3s;
+}
+.poster-cta-line a:hover { color: var(--neon-blue); }
+@media (max-width: 768px) {
+  .poster-card { flex: 0 0 220px; }
+  .poster-carousel-wrapper { padding: 0 2rem; }
+  .carousel-btn { width: 36px; height: 36px; font-size: 1rem; }
+  .poster-title { font-size: 1.15rem; }
+}
+
 /* ========== TICKER BAR ========== */
 .ticker-bar {
   background: var(--gold);
@@ -1383,6 +1551,84 @@ footer {
   </div>
 </div>
 
+<!-- PET MOVIE POSTER CAROUSEL -->
+<section class="poster-carousel-section reveal" id="pet-stars">
+  <div class="section-header">
+    <span class="section-label">STARRING YOUR PETS</span>
+    <h2 class="section-title" style="font-family:'Playfair Display',serif; font-size:clamp(2rem,5vw,3.2rem); font-weight:900; color:var(--gold);">The A-List</h2>
+    <div class="section-divider" style="width:80px; height:3px; background:var(--gold); margin:0.8rem auto 0; border-radius:2px;"></div>
+  </div>
+  <div class="poster-carousel-wrapper">
+    <button class="carousel-btn prev" onclick="scrollCarousel(-1)" aria-label="Previous poster">&#10094;</button>
+    <div class="poster-carousel-track" id="posterTrack">
+
+      <!-- POSTER 1: Action -->
+      <div class="poster-card">
+        <img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=560&h=840&fit=crop&crop=faces" alt="Action hero dog" loading="lazy">
+        <div class="poster-rating">PG-BARK</div>
+        <div class="poster-stars">★★★★★</div>
+        <div class="poster-overlay">
+          <span class="poster-genre">Action / Adventure</span>
+          <div class="poster-title">The Bark Knight Rises</div>
+          <div class="poster-tagline">"Gotham needs a good boy."</div>
+        </div>
+      </div>
+
+      <!-- POSTER 2: Romance -->
+      <div class="poster-card">
+        <img src="https://images.unsplash.com/photo-1574158622682-e40e69881006?w=560&h=840&fit=crop&crop=faces" alt="Romantic cat" loading="lazy">
+        <div class="poster-rating">PURR-13</div>
+        <div class="poster-stars">★★★★½</div>
+        <div class="poster-overlay">
+          <span class="poster-genre">Romance / Drama</span>
+          <div class="poster-title">The Notebook: Whiskers Edition</div>
+          <div class="poster-tagline">"If you're a bird, I'm a cat. Wait..."</div>
+        </div>
+      </div>
+
+      <!-- POSTER 3: Comedy -->
+      <div class="poster-card">
+        <img src="https://images.unsplash.com/photo-1583337130417-13571e47cf43?w=560&h=840&fit=crop&crop=faces" alt="Comedy golden retriever" loading="lazy">
+        <div class="poster-rating">G-BOY</div>
+        <div class="poster-stars">★★★★★</div>
+        <div class="poster-overlay">
+          <span class="poster-genre">Comedy</span>
+          <div class="poster-title">Ferris Barker's Day Off</div>
+          <div class="poster-tagline">"Life moves pretty fast. Stop and sniff."</div>
+        </div>
+      </div>
+
+      <!-- POSTER 4: Horror Parody -->
+      <div class="poster-card">
+        <img src="https://images.unsplash.com/photo-1526336024174-e58f5cdd8e13?w=560&h=840&fit=crop&crop=faces" alt="Spooky cat" loading="lazy">
+        <div class="poster-rating">R-HISS</div>
+        <div class="poster-stars">★★★★☆</div>
+        <div class="poster-overlay">
+          <span class="poster-genre">Horror / Thriller</span>
+          <div class="poster-title">The Silence of the Yams</div>
+          <div class="poster-tagline">"I ate his treats... with some kibble and a nice bowl of water."</div>
+        </div>
+      </div>
+
+      <!-- POSTER 5: Sci-Fi -->
+      <div class="poster-card">
+        <img src="https://images.unsplash.com/photo-1568572933382-74d440642117?w=560&h=840&fit=crop&crop=faces" alt="Sci-fi husky" loading="lazy">
+        <div class="poster-rating">PG-WOOF</div>
+        <div class="poster-stars">★★★★★</div>
+        <div class="poster-overlay">
+          <span class="poster-genre">Sci-Fi / Epic</span>
+          <div class="poster-title">Interstellar Fetch</div>
+          <div class="poster-tagline">"Do not go gentle into that dog park."</div>
+        </div>
+      </div>
+
+    </div>
+    <button class="carousel-btn next" onclick="scrollCarousel(1)" aria-label="Next poster">&#10095;</button>
+  </div>
+  <div class="poster-carousel-dots" id="posterDots"></div>
+  <p class="poster-cta-line">Your pet could be our next star — <a href="https://furfamilycinema.portal.gingrapp.com/public/login" target="_blank">Book their debut!</a></p>
+</section>
+
 <!-- SERVICES -->
 <section class="section" id="services">
   <div class="section-header reveal">
@@ -1981,6 +2227,55 @@ window.addEventListener('scroll', () => {
   }
   lastScroll = currentScroll;
 });
+
+// ========== POSTER CAROUSEL ==========
+(function() {
+  const track = document.getElementById('posterTrack');
+  const dotsContainer = document.getElementById('posterDots');
+  if (!track || !dotsContainer) return;
+  const cards = track.querySelectorAll('.poster-card');
+  const cardCount = cards.length;
+
+  // Create dots
+  cards.forEach((_, i) => {
+    const dot = document.createElement('button');
+    dot.classList.add('dot');
+    if (i === 0) dot.classList.add('active');
+    dot.setAttribute('aria-label', 'Go to poster ' + (i + 1));
+    dot.addEventListener('click', () => {
+      cards[i].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    });
+    dotsContainer.appendChild(dot);
+  });
+
+  const dots = dotsContainer.querySelectorAll('.dot');
+
+  // Update active dot on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const idx = Array.from(cards).indexOf(entry.target);
+        dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+      }
+    });
+  }, { root: track, threshold: 0.6 });
+
+  cards.forEach(card => observer.observe(card));
+
+  // Arrow scroll
+  window.scrollCarousel = function(dir) {
+    const cardWidth = cards[0].offsetWidth + 24; // card + gap
+    track.scrollBy({ left: dir * cardWidth, behavior: 'smooth' });
+  };
+
+  // Touch / drag support (mobile)
+  let isDown = false, startX, scrollLeft;
+  track.addEventListener('mousedown', (e) => { isDown = true; startX = e.pageX - track.offsetLeft; scrollLeft = track.scrollLeft; track.style.cursor = 'grabbing'; });
+  track.addEventListener('mouseleave', () => { isDown = false; track.style.cursor = 'grab'; });
+  track.addEventListener('mouseup', () => { isDown = false; track.style.cursor = 'grab'; });
+  track.addEventListener('mousemove', (e) => { if (!isDown) return; e.preventDefault(); const x = e.pageX - track.offsetLeft; track.scrollLeft = scrollLeft - (x - startX); });
+  track.style.cursor = 'grab';
+})();
 </script>
 
 </body>
