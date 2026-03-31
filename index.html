@@ -1,0 +1,1987 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fur Family Cinema | Where Fun is Off the Leash</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+/* ========== RESET & BASE ========== */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: #0a0a12;
+  color: #f0e6d3;
+  overflow-x: hidden;
+}
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+
+/* ========== CSS VARIABLES ========== */
+:root {
+  --gold: #3CBCB4;
+  --neon-pink: #3CBCB4;
+  --neon-blue: #5CE0D8;
+  --deep-purple: #2D1065;
+  --theater-red: #2D1065;
+  --warm-cream: #f0e6d3;
+  --dark-bg: #110833;
+  --card-bg: #1a0e40;
+}
+
+/* ========== MARQUEE LIGHTS KEYFRAMES ========== */
+@keyframes chase {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+@keyframes glow-pulse {
+  0%, 100% { text-shadow: 0 0 10px var(--gold), 0 0 30px var(--gold), 0 0 60px var(--gold); }
+  50% { text-shadow: 0 0 20px var(--gold), 0 0 50px var(--gold), 0 0 100px var(--gold), 0 0 150px var(--gold); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+/* film-scroll removed */
+@keyframes sparkle {
+  0%, 100% { opacity: 0; transform: scale(0); }
+  50% { opacity: 1; transform: scale(1); }
+}
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+/* ticker animation removed - bar is now static */
+@keyframes marquee-bulb {
+  0%, 49% { background: var(--gold); box-shadow: 0 0 8px var(--gold); }
+  50%, 100% { background: #5a4800; box-shadow: none; }
+}
+@keyframes popcorn-pop {
+  0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(-80px) rotate(360deg); opacity: 0; }
+}
+@keyframes curtain-open {
+  from { transform: scaleX(1); }
+  to { transform: scaleX(0); }
+}
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes neon-flicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
+  20%, 24%, 55% { opacity: 0.5; }
+}
+@keyframes pawprint-walk {
+  0% { opacity: 0; transform: scale(0.5) rotate(-20deg); }
+  50% { opacity: 0.6; transform: scale(1) rotate(0deg); }
+  100% { opacity: 0; transform: scale(0.5) rotate(20deg); }
+}
+@keyframes spotlight-sweep {
+  0% { transform: rotate(-15deg); }
+  50% { transform: rotate(15deg); }
+  100% { transform: rotate(-15deg); }
+}
+
+/* ========== CURTAIN INTRO ========== */
+.curtain-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 9999;
+  display: flex;
+  pointer-events: none;
+}
+.curtain-left, .curtain-right {
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, #1a0845, #2D1065, #220B55);
+  background-size: 30px 100%;
+  position: relative;
+  overflow: hidden;
+}
+.curtain-left::before, .curtain-right::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 25px,
+    rgba(0,0,0,0.15) 25px,
+    rgba(0,0,0,0.15) 30px
+  );
+}
+.curtain-left {
+  transform-origin: left;
+  animation: curtain-open 1.8s ease-in-out 0.5s forwards;
+}
+.curtain-right {
+  transform-origin: right;
+  animation: curtain-open 1.8s ease-in-out 0.5s forwards;
+}
+
+/* ========== NAVBAR ========== */
+nav {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  z-index: 1000;
+  background: rgba(17, 8, 51, 0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 2px solid var(--gold);
+  transition: transform 0.3s;
+}
+nav .nav-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 2rem;
+}
+nav .logo {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+nav .logo img {
+  height: 42px;
+  width: auto;
+}
+nav .logo-text {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 1.4rem;
+  letter-spacing: 3px;
+  color: var(--gold);
+}
+nav .nav-links {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+nav .nav-links a {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 1rem;
+  letter-spacing: 2px;
+  color: var(--warm-cream);
+  position: relative;
+  transition: color 0.3s;
+}
+nav .nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -3px; left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--neon-pink);
+  transition: width 0.3s;
+}
+nav .nav-links a:hover { color: var(--gold); }
+nav .nav-links a:hover::after { width: 100%; }
+nav .cta-btn {
+  background: #3CBCB4;
+  color: white;
+  padding: 0.5rem 1.2rem;
+  border-radius: 50px;
+  font-family: 'Bebas Neue', cursive;
+  font-size: 1rem;
+  letter-spacing: 2px;
+  transition: all 0.3s;
+  border: none;
+  cursor: pointer;
+}
+nav .cta-btn:hover {
+  background: var(--gold);
+  color: var(--dark-bg);
+  transform: scale(1.05);
+}
+
+/* Mobile nav */
+.hamburger { display: none; cursor: pointer; flex-direction: column; gap: 5px; }
+.hamburger span { display: block; width: 28px; height: 3px; background: var(--gold); border-radius: 2px; transition: 0.3s; }
+
+/* ========== MARQUEE LIGHT BORDER ========== */
+.marquee-border {
+  position: relative;
+  overflow: hidden;
+}
+.marquee-border::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 2;
+  background:
+    radial-gradient(circle 4px, #3CBCB4 100%, transparent 100%) 0 0 / 20px 20px repeat-x,
+    radial-gradient(circle 4px, #3CBCB4 100%, transparent 100%) 0 100% / 20px 20px repeat-x;
+  animation: chase 1s infinite;
+}
+
+/* ========== HERO ========== */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  padding: 6rem 2rem 4rem;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(60, 188, 180, 0.12) 0%, transparent 60%),
+    radial-gradient(ellipse at 20% 80%, rgba(45, 16, 101, 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgba(92, 224, 216, 0.05) 0%, transparent 50%),
+    var(--dark-bg);
+  overflow: hidden;
+}
+
+/* Spotlight effect */
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  height: 200%;
+  background: linear-gradient(to bottom, rgba(245, 210, 60, 0.07), transparent 70%);
+  animation: spotlight-sweep 8s ease-in-out infinite;
+  transform-origin: top center;
+}
+
+/* Film strips removed */
+.film-strip-left, .film-strip-right { display: none; }
+
+/* Stars bg */
+.stars {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+}
+.star {
+  position: absolute;
+  width: 3px; height: 3px;
+  background: white;
+  border-radius: 50%;
+  animation: sparkle 3s ease-in-out infinite;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 3;
+  animation: fade-in 1s ease-out 2s both;
+}
+
+.hero-logo {
+  width: 180px;
+  height: auto;
+  margin-bottom: 1.2rem;
+  filter: drop-shadow(0 0 30px rgba(60, 188, 180, 0.2));
+  animation: float 4s ease-in-out infinite;
+}
+
+.hero-subtitle-top {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 1.3rem;
+  letter-spacing: 8px;
+  color: var(--neon-pink);
+  margin-bottom: 0.5rem;
+  animation: neon-flicker 4s infinite;
+}
+
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3rem, 8vw, 6rem);
+  font-weight: 900;
+  line-height: 1.05;
+  margin-bottom: 0.5rem;
+  animation: glow-pulse 3s ease-in-out infinite;
+  color: var(--gold);
+}
+
+.hero-tagline {
+  font-family: 'Bebas Neue', cursive;
+  font-size: clamp(1.2rem, 3vw, 1.8rem);
+  letter-spacing: 6px;
+  color: var(--warm-cream);
+  margin-bottom: 0.5rem;
+  opacity: 0.9;
+}
+
+.hero-desc {
+  font-size: 1.1rem;
+  max-width: 600px;
+  margin: 0.8rem auto 2rem;
+  color: rgba(240, 230, 211, 0.7);
+  line-height: 1.6;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #3CBCB4, #2a9e97);
+  color: white;
+  padding: 1rem 2.5rem;
+  border-radius: 50px;
+  font-family: 'Bebas Neue', cursive;
+  font-size: 1.2rem;
+  letter-spacing: 3px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+}
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: 0.5s;
+}
+.btn-primary:hover::before { left: 100%; }
+.btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(60, 188, 180, 0.4); }
+
+.btn-secondary {
+  background: transparent;
+  color: var(--gold);
+  padding: 1rem 2.5rem;
+  border-radius: 50px;
+  font-family: 'Bebas Neue', cursive;
+  font-size: 1.2rem;
+  letter-spacing: 3px;
+  border: 2px solid var(--gold);
+  cursor: pointer;
+  transition: all 0.3s;
+  display: inline-block;
+}
+.btn-secondary:hover {
+  background: var(--gold);
+  color: var(--dark-bg);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(245, 197, 24, 0.3);
+}
+
+/* ========== TICKER BAR ========== */
+.ticker-bar {
+  background: var(--gold);
+  color: var(--dark-bg);
+  padding: 0.7rem 0;
+  font-family: 'Bebas Neue', cursive;
+  font-size: 1rem;
+  letter-spacing: 3px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem 2rem;
+}
+.ticker-content {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem 2rem;
+}
+.ticker-content span {
+  white-space: nowrap;
+}
+
+/* ========== NOW SHOWING - SERVICES ========== */
+.section { padding: 5rem 2rem; position: relative; }
+.section-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+.section-label {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 1rem;
+  letter-spacing: 6px;
+  color: var(--neon-pink);
+  display: block;
+  margin-bottom: 0.3rem;
+}
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 900;
+  color: var(--gold);
+}
+.section-divider {
+  width: 80px;
+  height: 3px;
+  background: linear-gradient(90deg, #2D1065, #3CBCB4);
+  margin: 1rem auto 0;
+  border-radius: 2px;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.service-card {
+  background: var(--card-bg);
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.4s, box-shadow 0.4s;
+  border: 1px solid rgba(245, 197, 24, 0.1);
+}
+.service-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+}
+.service-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 4px;
+  background: linear-gradient(90deg, #2D1065, #3CBCB4, #5CE0D8);
+}
+.service-poster {
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 5rem;
+  position: relative;
+  overflow: hidden;
+}
+.service-poster.boarding-bg {
+  background: linear-gradient(135deg, #2D1065, #1a0845);
+}
+.service-poster.daycare-bg {
+  background: linear-gradient(135deg, #1a0845, #0d1a3a);
+}
+.service-poster.spa-bg {
+  background: linear-gradient(135deg, #2D1065, #3a1580);
+}
+.service-poster .now-showing {
+  position: absolute;
+  top: 12px; right: 12px;
+  background: #2D1065;
+  color: white;
+  font-family: 'Bebas Neue', cursive;
+  font-size: 0.7rem;
+  letter-spacing: 2px;
+  padding: 0.3rem 0.8rem;
+  border-radius: 50px;
+  animation: neon-flicker 3s infinite;
+}
+.service-info {
+  padding: 1.5rem;
+}
+.service-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  color: var(--gold);
+  margin-bottom: 0.5rem;
+}
+.service-desc {
+  font-size: 0.95rem;
+  color: rgba(240, 230, 211, 0.7);
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+.service-features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 1.2rem;
+}
+.feature-tag {
+  background: rgba(245, 197, 24, 0.1);
+  color: var(--gold);
+  font-size: 0.75rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 50px;
+  border: 1px solid rgba(245, 197, 24, 0.2);
+}
+.service-cta {
+  display: inline-block;
+  background: linear-gradient(135deg, #3CBCB4, #2a9e97);
+  color: white;
+  padding: 0.6rem 1.5rem;
+  border-radius: 50px;
+  font-family: 'Bebas Neue', cursive;
+  letter-spacing: 2px;
+  font-size: 0.9rem;
+  transition: all 0.3s;
+}
+.service-cta:hover {
+  transform: scale(1.05);
+  box-shadow: 0 5px 20px rgba(60, 188, 180, 0.4);
+}
+
+/* ========== ABOUT / STORY SECTION ========== */
+.about-section {
+  background: linear-gradient(180deg, var(--dark-bg), var(--deep-purple), var(--dark-bg));
+}
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  max-width: 1100px;
+  margin: 0 auto;
+  align-items: center;
+}
+.about-visual {
+  position: relative;
+}
+.about-ticket {
+  background: var(--gold);
+  color: var(--dark-bg);
+  border-radius: 16px;
+  padding: 2.5rem;
+  position: relative;
+  font-family: 'Bebas Neue', cursive;
+  overflow: hidden;
+}
+.about-ticket::before,
+.about-ticket::after {
+  content: '';
+  position: absolute;
+  width: 30px; height: 30px;
+  background: var(--deep-purple);
+  border-radius: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.about-ticket::before { left: -15px; }
+.about-ticket::after { right: -15px; }
+.ticket-header {
+  font-size: 1.6rem;
+  letter-spacing: 3px;
+  margin-bottom: 0.5rem;
+}
+.ticket-detail {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-bottom: 0.3rem;
+  color: rgba(10, 10, 18, 0.7);
+}
+.ticket-big {
+  font-size: 3rem;
+  letter-spacing: 5px;
+  margin: 1rem 0;
+  line-height: 1;
+}
+.ticket-stars {
+  font-size: 1.5rem;
+  margin-top: 0.5rem;
+}
+.about-text h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  color: var(--gold);
+  margin-bottom: 1rem;
+}
+.about-text p {
+  color: rgba(240, 230, 211, 0.75);
+  line-height: 1.8;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+.about-highlight {
+  display: inline-block;
+  color: #5CE0D8;
+  font-weight: 600;
+}
+
+/* ========== HOURS & LOCATION ========== */
+.location-section {
+  background: var(--card-bg);
+}
+.location-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.hours-card {
+  background: rgba(245, 197, 24, 0.05);
+  border: 1px solid rgba(245, 197, 24, 0.15);
+  border-radius: 16px;
+  padding: 2rem;
+}
+.hours-card h3 {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 1.4rem;
+  letter-spacing: 3px;
+  color: var(--gold);
+  margin-bottom: 1.2rem;
+}
+.hours-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid rgba(245, 197, 24, 0.1);
+  font-size: 0.95rem;
+}
+.hours-row:last-child { border-bottom: none; }
+.hours-day { color: var(--warm-cream); }
+.hours-time { color: var(--gold); font-weight: 600; }
+.hours-note {
+  font-size: 0.8rem;
+  color: rgba(240, 230, 211, 0.5);
+  margin-top: 0.8rem;
+  font-style: italic;
+}
+.contact-card {
+  background: rgba(45, 16, 101, 0.15);
+  border: 1px solid rgba(45, 16, 101, 0.3);
+  border-radius: 16px;
+  padding: 2rem;
+}
+.contact-card h3 {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 1.4rem;
+  letter-spacing: 3px;
+  color: #5CE0D8;
+  margin-bottom: 1.2rem;
+}
+.contact-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.7rem 0;
+  font-size: 0.95rem;
+  color: var(--warm-cream);
+  transition: color 0.3s;
+}
+.contact-row:hover { color: var(--gold); }
+.contact-icon {
+  width: 40px;
+  height: 40px;
+  background: rgba(60, 188, 180, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+/* ========== WHY CHOOSE US ========== */
+.why-section { background: var(--dark-bg); }
+.why-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.why-card {
+  text-align: center;
+  padding: 2rem 1.5rem;
+  background: var(--card-bg);
+  border-radius: 16px;
+  border: 1px solid rgba(245, 197, 24, 0.08);
+  transition: transform 0.3s, border-color 0.3s;
+}
+.why-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--gold);
+}
+.why-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  display: block;
+  animation: float 3s ease-in-out infinite;
+}
+.why-card:nth-child(2) .why-icon { animation-delay: 0.5s; }
+.why-card:nth-child(3) .why-icon { animation-delay: 1s; }
+.why-card:nth-child(4) .why-icon { animation-delay: 1.5s; }
+.why-card h4 {
+  font-family: 'Playfair Display', serif;
+  color: var(--gold);
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+.why-card p {
+  color: rgba(240, 230, 211, 0.6);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+/* ========== PETS WE WELCOME ========== */
+.pets-section {
+  background: linear-gradient(180deg, var(--dark-bg), #0f0f22);
+}
+.pets-row {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+  flex-wrap: wrap;
+}
+.pet-badge {
+  text-align: center;
+  transition: transform 0.3s;
+}
+.pet-badge:hover { transform: scale(1.1); }
+.pet-circle {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  border: 2px solid var(--gold);
+  background: rgba(245, 197, 24, 0.05);
+  transition: background 0.3s;
+}
+.pet-badge:hover .pet-circle {
+  background: rgba(245, 197, 24, 0.15);
+}
+.pet-label {
+  font-family: 'Bebas Neue', cursive;
+  letter-spacing: 2px;
+  font-size: 0.9rem;
+  color: var(--warm-cream);
+}
+
+/* ========== FAQ SECTION ========== */
+.faq-section { background: var(--card-bg); }
+.faq-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+.faq-item {
+  border-bottom: 1px solid rgba(245, 197, 24, 0.1);
+}
+.faq-question {
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 1.2rem 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  color: var(--warm-cream);
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: left;
+  transition: color 0.3s;
+}
+.faq-question:hover { color: var(--gold); }
+.faq-toggle {
+  font-size: 1.5rem;
+  color: var(--gold);
+  transition: transform 0.3s;
+  flex-shrink: 0;
+  margin-left: 1rem;
+}
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease, padding 0.4s;
+  color: rgba(240, 230, 211, 0.65);
+  line-height: 1.7;
+  font-size: 0.95rem;
+}
+.faq-item.open .faq-answer {
+  max-height: 300px;
+  padding-bottom: 1.2rem;
+}
+.faq-item.open .faq-toggle {
+  transform: rotate(45deg);
+}
+
+/* ========== HEALTH REQUIREMENTS ========== */
+.health-section { background: var(--dark-bg); }
+.health-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.health-card {
+  background: var(--card-bg);
+  border-radius: 16px;
+  padding: 2rem;
+  border: 1px solid rgba(245, 197, 24, 0.1);
+}
+.health-card h4 {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 1.3rem;
+  letter-spacing: 2px;
+  color: var(--gold);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.health-card ul li {
+  position: relative;
+  padding: 0.4rem 0 0.4rem 1.5rem;
+  color: rgba(240, 230, 211, 0.7);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.health-card ul li::before {
+  content: '>';
+  position: absolute;
+  left: 0;
+  color: var(--neon-pink);
+  font-weight: 700;
+}
+
+/* ========== CAREERS / JOBS ========== */
+.careers-section {
+  background: linear-gradient(135deg, var(--deep-purple), #0f0f22);
+  text-align: center;
+}
+.careers-section .section-header { margin-bottom: 2rem; }
+.careers-text {
+  max-width: 600px;
+  margin: 0 auto 2rem;
+  color: rgba(240, 230, 211, 0.7);
+  line-height: 1.7;
+  font-size: 1rem;
+}
+.perks-row {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+.perk {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+  color: var(--warm-cream);
+}
+.perk-icon { font-size: 1.3rem; }
+
+/* ========== FOOTER ========== */
+footer {
+  background: #0a0525;
+  padding: 3rem 2rem 1.5rem;
+  border-top: 2px solid rgba(245, 197, 24, 0.15);
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 3rem;
+  max-width: 1100px;
+  margin: 0 auto 2rem;
+}
+.footer-brand .footer-logo-row {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-bottom: 0.8rem;
+}
+.footer-brand .footer-logo-row img {
+  height: 50px;
+  width: auto;
+}
+.footer-brand .footer-logo-row span {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 1.4rem;
+  letter-spacing: 3px;
+  color: var(--gold);
+}
+.footer-brand p {
+  color: rgba(240, 230, 211, 0.5);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  max-width: 300px;
+}
+.footer-col h4 {
+  font-family: 'Bebas Neue', cursive;
+  letter-spacing: 2px;
+  color: var(--gold);
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+.footer-col a {
+  display: block;
+  color: rgba(240, 230, 211, 0.5);
+  font-size: 0.85rem;
+  padding: 0.3rem 0;
+  transition: color 0.3s;
+}
+.footer-col a:hover { color: var(--gold); }
+.footer-bottom {
+  text-align: center;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(245, 197, 24, 0.1);
+  color: rgba(240, 230, 211, 0.3);
+  font-size: 0.8rem;
+}
+.footer-bottom .hearts { color: #3CBCB4; }
+
+/* ========== GINGR APP SECTION ========== */
+.app-section {
+  background: linear-gradient(135deg, #1a0a2e, #0a0a12);
+  text-align: center;
+}
+.app-container {
+  max-width: 700px;
+  margin: 0 auto;
+}
+.app-badge {
+  display: inline-block;
+  background: rgba(0, 212, 255, 0.1);
+  border: 1px solid rgba(0, 212, 255, 0.3);
+  border-radius: 12px;
+  padding: 1.5rem 2.5rem;
+  margin-top: 1.5rem;
+}
+.app-code {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 2rem;
+  color: var(--neon-blue);
+  letter-spacing: 4px;
+}
+.app-label {
+  font-size: 0.8rem;
+  color: rgba(240, 230, 211, 0.5);
+  margin-top: 0.3rem;
+}
+.app-desc {
+  color: rgba(240, 230, 211, 0.7);
+  line-height: 1.7;
+  margin-top: 1rem;
+  font-size: 0.95rem;
+}
+.app-stores {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.8rem;
+  flex-wrap: wrap;
+}
+.store-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  background: rgba(240, 230, 211, 0.08);
+  border: 1px solid rgba(240, 230, 211, 0.15);
+  border-radius: 12px;
+  padding: 0.75rem 1.5rem;
+  color: var(--warm-cream);
+  transition: all 0.3s;
+}
+.store-btn:hover {
+  background: rgba(60, 188, 180, 0.12);
+  border-color: rgba(60, 188, 180, 0.3);
+  transform: translateY(-2px);
+}
+.store-btn svg {
+  width: 28px;
+  height: 28px;
+  fill: var(--warm-cream);
+  flex-shrink: 0;
+}
+.store-btn .store-text {
+  text-align: left;
+  line-height: 1.2;
+}
+.store-btn .store-small {
+  font-size: 0.65rem;
+  color: rgba(240, 230, 211, 0.5);
+  letter-spacing: 0.5px;
+}
+.store-btn .store-name {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+/* ========== PRICING SECTION ========== */
+.pricing-section { background: var(--dark-bg); }
+.pricing-effective {
+  text-align: center;
+  color: rgba(240, 230, 211, 0.5);
+  font-size: 0.85rem;
+  margin-bottom: 2rem;
+  font-style: italic;
+}
+.pricing-categories {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.price-category {
+  background: var(--card-bg);
+  border-radius: 16px;
+  padding: 1.8rem;
+  border: 1px solid rgba(60, 188, 180, 0.1);
+}
+.price-category h4 {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 1.3rem;
+  letter-spacing: 2px;
+  color: var(--gold);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.price-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+.price-table th {
+  text-align: left;
+  padding: 0.5rem 0.8rem;
+  font-family: 'Bebas Neue', cursive;
+  letter-spacing: 1px;
+  color: #5CE0D8;
+  border-bottom: 2px solid rgba(60, 188, 180, 0.2);
+  font-size: 0.85rem;
+}
+.price-table td {
+  padding: 0.5rem 0.8rem;
+  border-bottom: 1px solid rgba(240, 230, 211, 0.06);
+  color: rgba(240, 230, 211, 0.75);
+}
+.price-table td:last-child {
+  color: var(--gold);
+  font-weight: 700;
+  text-align: right;
+}
+.price-table th:last-child { text-align: right; }
+.price-note {
+  font-size: 0.8rem;
+  color: rgba(240, 230, 211, 0.4);
+  margin-top: 0.6rem;
+  font-style: italic;
+}
+.price-inline {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid rgba(240, 230, 211, 0.06);
+  font-size: 0.9rem;
+  color: rgba(240, 230, 211, 0.75);
+}
+.price-inline span:last-child {
+  color: var(--gold);
+  font-weight: 700;
+}
+
+/* ========== EXPANDED SPA SECTION ========== */
+.spa-section { background: linear-gradient(180deg, #0f0f22, var(--dark-bg)); }
+.spa-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.spa-block {
+  background: var(--card-bg);
+  border-radius: 16px;
+  padding: 2rem;
+  border: 1px solid rgba(60, 188, 180, 0.1);
+}
+.spa-block h4 {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 1.2rem;
+  letter-spacing: 2px;
+  color: var(--gold);
+  margin-bottom: 0.8rem;
+}
+.spa-block p {
+  color: rgba(240, 230, 211, 0.7);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin-bottom: 0.5rem;
+}
+.spa-highlight {
+  background: rgba(60, 188, 180, 0.08);
+  border: 1px solid rgba(60, 188, 180, 0.2);
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: center;
+  margin-top: 1rem;
+}
+.spa-highlight .big-price {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 2.5rem;
+  color: var(--gold);
+  letter-spacing: 2px;
+}
+.spa-highlight .price-label {
+  font-size: 0.85rem;
+  color: rgba(240, 230, 211, 0.6);
+}
+.partner-callout {
+  max-width: 800px;
+  margin: 2.5rem auto 0;
+  background: linear-gradient(135deg, rgba(45, 16, 101, 0.25), rgba(60, 188, 180, 0.05));
+  border: 1px solid rgba(60, 188, 180, 0.15);
+  border-radius: 20px;
+  padding: 2.2rem 2.5rem;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 1.8rem;
+}
+.partner-callout .partner-icon {
+  font-size: 2.4rem;
+  width: 56px;
+  height: 56px;
+  background: rgba(60, 188, 180, 0.1);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.partner-callout .partner-text h4 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--warm-cream);
+  margin-bottom: 0.4rem;
+}
+.partner-callout .partner-text h4 span {
+  color: #5CE0D8;
+}
+.partner-callout .partner-text p {
+  color: rgba(240, 230, 211, 0.55);
+  font-size: 0.9rem;
+  line-height: 1.55;
+  margin: 0;
+}
+.partner-callout .partner-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(60, 188, 180, 0.12);
+  border: 1px solid rgba(60, 188, 180, 0.25);
+  color: #5CE0D8;
+  padding: 0.7rem 1.4rem;
+  border-radius: 50px;
+  font-family: 'Bebas Neue', cursive;
+  font-size: 0.9rem;
+  letter-spacing: 2px;
+  transition: all 0.3s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.partner-callout .partner-cta:hover {
+  background: rgba(60, 188, 180, 0.2);
+  border-color: #5CE0D8;
+  transform: translateY(-2px);
+}
+@media (max-width: 900px) {
+  .spa-grid { grid-template-columns: 1fr; }
+  .partner-callout {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 1rem;
+  }
+  .partner-callout .partner-icon { margin: 0 auto; }
+  .partner-callout .partner-cta { margin: 0 auto; }
+}
+
+/* ========== SOCIAL SECTION ========== */
+.social-section {
+  background: linear-gradient(180deg, var(--dark-bg), #0f0830);
+  text-align: center;
+  padding: 4rem 2rem;
+}
+.social-section .section-header { margin-bottom: 1.5rem; }
+.social-tagline {
+  color: rgba(240, 230, 211, 0.65);
+  font-size: 1.05rem;
+  line-height: 1.7;
+  max-width: 550px;
+  margin: 0 auto 2rem;
+}
+.social-links {
+  display: flex;
+  justify-content: center;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+}
+.social-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: rgba(240, 230, 211, 0.06);
+  border: 1px solid rgba(240, 230, 211, 0.1);
+  border-radius: 14px;
+  padding: 0.8rem 1.5rem;
+  color: var(--warm-cream);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.3s;
+}
+.social-link:hover {
+  transform: translateY(-3px);
+  border-color: #5CE0D8;
+  background: rgba(60, 188, 180, 0.1);
+}
+.social-link svg {
+  width: 22px;
+  height: 22px;
+  fill: #5CE0D8;
+  flex-shrink: 0;
+}
+.social-link:hover svg { fill: var(--warm-cream); }
+
+/* Footer social row */
+.footer-social {
+  display: flex;
+  gap: 0.8rem;
+  margin-top: 1rem;
+}
+.footer-social a {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(240, 230, 211, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+}
+.footer-social a:hover {
+  background: rgba(60, 188, 180, 0.2);
+  transform: translateY(-2px);
+}
+.footer-social svg {
+  width: 18px;
+  height: 18px;
+  fill: rgba(240, 230, 211, 0.5);
+}
+.footer-social a:hover svg { fill: #5CE0D8; }
+
+/* ========== SCROLL ANIMATIONS ========== */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 900px) {
+  .about-grid, .location-grid, .footer-grid {
+    grid-template-columns: 1fr;
+  }
+  /* film strips removed */
+}
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .hamburger { display: flex; }
+  .nav-links.open {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 100%; left: 0;
+    width: 100%;
+    background: rgba(17, 8, 51, 0.98);
+    padding: 1rem 2rem 2rem;
+    gap: 1rem;
+    border-bottom: 2px solid var(--gold);
+  }
+  .services-grid { grid-template-columns: 1fr; }
+  .hero { padding: 5rem 1rem 3rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- CURTAIN REVEAL -->
+<div class="curtain-overlay" id="curtain">
+  <div class="curtain-left"></div>
+  <div class="curtain-right"></div>
+</div>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#hero" class="logo"><img src="logo.png" alt="Fur Family Cinema"><span class="logo-text">FUR FAMILY CINEMA</span></a>
+    <div class="nav-links" id="navLinks">
+      <a href="#services">Services</a>
+      <a href="#spa">Spa</a>
+      <a href="#about">About</a>
+      <a href="#location">Hours</a>
+      <a href="#prices">Prices</a>
+      <a href="#health">Health</a>
+      <a href="#faq">FAQ</a>
+      <a href="#careers">Jobs</a>
+      <a href="https://furfamilycinema.portal.gingrapp.com/public/login" class="cta-btn" target="_blank">Book Now</a>
+    </div>
+    <div class="hamburger" id="hamburger" onclick="toggleNav()">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="film-strip-left"></div>
+  <div class="film-strip-right"></div>
+  <div class="stars" id="stars"></div>
+
+  <div class="hero-content">
+    <img src="logo.png" alt="Fur Family Cinema" class="hero-logo">
+    <div class="hero-subtitle-top">NOW SHOWING IN LEWISTON, ID</div>
+    <h1 class="hero-title">Fur Family<br>Cinema</h1>
+    <p class="hero-tagline">WHERE FUN IS OFF THE LEASH</p>
+    <p class="hero-desc">
+      Boarding, Daycare, Spa & Boutique in the lovingly restored Orchards Cinema building.
+      24/7 on-site care. Trusted by LC Valley pet owners since 2018.
+    </p>
+    <div class="hero-buttons">
+      <a href="https://furfamilycinema.portal.gingrapp.com/public/login" class="btn-primary" target="_blank">BOOK A STAY</a>
+      <a href="#services" class="btn-secondary">SEE WHAT'S SHOWING</a>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-bar">
+  <div class="ticker-content">
+    <span>🐾 24/7 ON-SITE CARE</span>
+    <span>⭐ 4.9 STARS ON GOOGLE</span>
+    <span>🏠 LOCALLY OWNED</span>
+    <span>🐕 1 ACRE PLAY YARD</span>
+    <span>🐈 PRIVATE CAT SUITES</span>
+    <span>🛁 SELF-WASH SPA</span>
+    <span>🦎 BIRDS, FERRETS & REPTILES WELCOME</span>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section class="section" id="services">
+  <div class="section-header reveal">
+    <span class="section-label">NOW SHOWING</span>
+    <h2 class="section-title">Our Feature Presentations</h2>
+    <div class="section-divider"></div>
+  </div>
+
+  <div class="services-grid">
+    <div class="service-card reveal">
+      <div class="service-poster boarding-bg">
+        <span class="now-showing">NOW SHOWING</span>
+        <span>🏠</span>
+      </div>
+      <div class="service-info">
+        <h3 class="service-name">Boarding</h3>
+        <p class="service-desc">Overnights with love, comfort & 24/7 care. Glass-front cozy suites, Kuranda beds, daily play sessions in our 1-acre yard, and midnight snuggles. We board dogs, cats, birds, ferrets & reptiles.</p>
+        <div class="service-features">
+          <span class="feature-tag">24/7 Staff</span>
+          <span class="feature-tag">1-Acre Yard</span>
+          <span class="feature-tag">Cozy Suites</span>
+          <span class="feature-tag">All Pets</span>
+        </div>
+        <a href="https://furfamilycinema.portal.gingrapp.com/public/login" class="service-cta" target="_blank">BOOK BOARDING</a>
+      </div>
+    </div>
+
+    <div class="service-card reveal">
+      <div class="service-poster daycare-bg">
+        <span class="now-showing">NOW SHOWING</span>
+        <span>🐕</span>
+      </div>
+      <div class="service-info">
+        <h3 class="service-name">Daycare</h3>
+        <p class="service-desc">Safe, social play with trained staff and enrichment. Dogs are grouped by size and temperament. First-time pups get a full-day evaluation to make sure they thrive in our open-play environment.</p>
+        <div class="service-features">
+          <span class="feature-tag">Supervised Play</span>
+          <span class="feature-tag">Enrichment</span>
+          <span class="feature-tag">Eval Required</span>
+          <span class="feature-tag">16+ Weeks</span>
+        </div>
+        <a href="https://furfamilycinema.portal.gingrapp.com/public/login" class="service-cta" target="_blank">SCHEDULE EVAL</a>
+      </div>
+    </div>
+
+    <div class="service-card reveal">
+      <div class="service-poster spa-bg">
+        <span class="now-showing">NOW SHOWING</span>
+        <span>🛁</span>
+      </div>
+      <div class="service-info">
+        <h3 class="service-name">Spa & Self-Wash</h3>
+        <p class="service-desc">Katie is our grooming specialist, making every bath a calming, tail-wagging experience. She's trained in fear-free handling and works with pups of all breeds and temperaments.</p>
+        <div class="service-features">
+          <span class="feature-tag">From $20</span>
+          <span class="feature-tag">Self-Wash</span>
+          <span class="feature-tag">De-Shedding</span>
+          <span class="feature-tag">Fear-Free</span>
+        </div>
+        <a href="#spa" class="service-cta">SEE SPA DETAILS</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPANDED SPA SECTION -->
+<section class="section spa-section" id="spa">
+  <div class="section-header reveal">
+    <span class="section-label">THE SPA EXPERIENCE</span>
+    <h2 class="section-title">Ready for Your Close Up?</h2>
+    <div class="section-divider"></div>
+  </div>
+
+  <div class="spa-grid">
+    <div class="spa-block reveal">
+      <h4>🛁 DOG SPA WITH KATIE</h4>
+      <p>Includes bath, nails, brush & dry. Katie is our grooming specialist trained in fear-free handling — she works with every breed and temperament.</p>
+      <table class="price-table">
+        <thead><tr><th>Dog's Weight</th><th>Price</th></tr></thead>
+        <tbody>
+          <tr><td>0 – 10 lbs</td><td>$50</td></tr>
+          <tr><td>11 – 25 lbs</td><td>$60</td></tr>
+          <tr><td>26 – 55 lbs</td><td>$70</td></tr>
+          <tr><td>56 – 85 lbs</td><td>$80</td></tr>
+          <tr><td>86 – 100 lbs</td><td>$90</td></tr>
+          <tr><td>Over 100 lbs</td><td>$125</td></tr>
+        </tbody>
+      </table>
+      <p class="price-note">Bath Basics: Shampoo & conditioner, bath-time massage, fluff dry & brush out.</p>
+    </div>
+
+    <div class="spa-block reveal">
+      <h4>✨ ADD-ONS & EXTRAS</h4>
+      <div class="price-inline"><span>De-Shedding Treatment</span><span>$25</span></div>
+      <div class="price-inline"><span>Nail Trim</span><span>$15</span></div>
+      <div class="price-inline"><span>Teeth Brushing</span><span>$15</span></div>
+      <div class="price-inline"><span>Ear Cleaning</span><span>Ask us</span></div>
+      <div class="spa-highlight" style="margin-top:1.5rem;">
+        <div class="big-price">$20</div>
+        <div class="price-label">Self-Serve Wash Station</div>
+        <div class="price-label">per dog / 30-minute session</div>
+        <p style="margin-top:0.8rem;font-size:0.85rem;color:rgba(240,230,211,0.55);">We provide towels, shampoo & treats. Appointments required. Must be a registered client with up-to-date immunizations. Book a second 30-min block for longer baths.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="partner-callout reveal">
+    <span class="partner-icon">✂️</span>
+    <div class="partner-text">
+      <h4>Need a Haircut? Meet <span>Desert Sage Grooming</span></h4>
+      <p>Independent grooming salon located right inside our facility. Professional cuts and styling for dogs and cats — call <a href="tel:2088491478" style="color:#5CE0D8;white-space:nowrap;">(208)&nbsp;849-1478</a> to book.</p>
+    </div>
+    <a href="https://www.facebook.com/people/Desert-Sage-Grooming-Salon/100083651795865/" class="partner-cta" target="_blank">VISIT ON FACEBOOK →</a>
+  </div>
+</section>
+
+<!-- PRICING SECTION -->
+<section class="section pricing-section" id="prices">
+  <div class="section-header reveal">
+    <span class="section-label">BOX OFFICE</span>
+    <h2 class="section-title">2026 Pricing Menu</h2>
+    <div class="section-divider"></div>
+  </div>
+  <p class="pricing-effective reveal">Effective January 1, 2026</p>
+
+  <div class="pricing-categories">
+    <div class="price-category reveal">
+      <h4>🏠 Boarding</h4>
+      <table class="price-table">
+        <thead><tr><th>Service</th><th>Rate</th></tr></thead>
+        <tbody>
+          <tr><td>Cats, Birds, Bunnies</td><td>$28/night</td></tr>
+          <tr><td>Dog Boarding Only (no daycare)</td><td>$62/night</td></tr>
+          <tr><td>Dog Boarding + Daycare</td><td>$69/night</td></tr>
+          <tr><td>Bunk Boarding (&lt; 20 lbs)</td><td>$63/night</td></tr>
+        </tbody>
+      </table>
+      <p class="price-note">Glass-front suites, Kuranda beds, 6-8 daily play/potty sessions, 24/7 staff.</p>
+    </div>
+
+    <div class="price-category reveal">
+      <h4>🐕 Doggy Daycare</h4>
+      <table class="price-table">
+        <thead><tr><th>Service</th><th>Rate</th></tr></thead>
+        <tbody>
+          <tr><td>Half Day (0 – 4 hrs)</td><td>$22</td></tr>
+          <tr><td>Full Day (4 – 12 hrs)</td><td>$35</td></tr>
+          <tr><td>Daycare Evaluation</td><td>$35</td></tr>
+        </tbody>
+      </table>
+      <p class="price-note">Evaluation required for all first-time daycare dogs. Non-refundable deposit.</p>
+    </div>
+
+    <div class="price-category reveal">
+      <h4>⭐ Daycare Packages</h4>
+      <table class="price-table">
+        <thead><tr><th>Package</th><th>Rate</th><th>Daily</th></tr></thead>
+        <tbody>
+          <tr><td>5 Half Days</td><td>$95</td><td>$19/day</td></tr>
+          <tr><td>10 Half Days</td><td>$185</td><td>$18.50</td></tr>
+          <tr><td>15 Half Days</td><td>$275</td><td>$18.33</td></tr>
+          <tr><td>20 Half Days</td><td>$365</td><td>$18.25</td></tr>
+          <tr><td>5 Full Days</td><td>$145</td><td>$29/day</td></tr>
+          <tr><td>10 Full Days</td><td>$285</td><td>$28.50</td></tr>
+          <tr><td>15 Full Days</td><td>$425</td><td>$28.33</td></tr>
+          <tr><td>20 Full Days</td><td>$565</td><td>$28.25</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="price-category reveal">
+      <h4>🍽️ Add-Ons & Extras</h4>
+      <div class="price-inline"><span>Lunch Add-On (house food, per meal)</span><span>$2.50</span></div>
+      <div class="price-inline"><span>Self-Serve Wash (per dog, 30 min)</span><span>$20</span></div>
+      <div class="price-inline"><span>De-Shedding Treatment</span><span>$25</span></div>
+      <div class="price-inline"><span>Nail Trim</span><span>$15</span></div>
+      <div class="price-inline"><span>Teeth Brushing</span><span>$15</span></div>
+      <p class="price-note">10% military & senior discount. Discounted daycare packages available. 24-hour cancellation notice required.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PETS WE WELCOME -->
+<section class="section pets-section">
+  <div class="section-header reveal">
+    <span class="section-label">ALL CREATURES WELCOME</span>
+    <h2 class="section-title">The Full Cast</h2>
+    <div class="section-divider"></div>
+  </div>
+  <div class="pets-row reveal">
+    <div class="pet-badge">
+      <div class="pet-circle">🐕</div>
+      <div class="pet-label">Dogs</div>
+    </div>
+    <div class="pet-badge">
+      <div class="pet-circle">🐈</div>
+      <div class="pet-label">Cats</div>
+    </div>
+    <div class="pet-badge">
+      <div class="pet-circle">🐦</div>
+      <div class="pet-label">Birds</div>
+    </div>
+    <div class="pet-badge">
+      <div class="pet-circle">🐰</div>
+      <div class="pet-label">Bunnies</div>
+    </div>
+    <div class="pet-badge">
+      <div class="pet-circle">🦎</div>
+      <div class="pet-label">Reptiles</div>
+    </div>
+    <div class="pet-badge">
+      <div class="pet-circle">🐹</div>
+      <div class="pet-label">Ferrets</div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY CHOOSE US -->
+<section class="section why-section">
+  <div class="section-header reveal">
+    <span class="section-label">CRITICS' CHOICE</span>
+    <h2 class="section-title">Why We're a Blockbuster</h2>
+    <div class="section-divider"></div>
+  </div>
+  <div class="why-grid">
+    <div class="why-card reveal">
+      <span class="why-icon">🌙</span>
+      <h4>24/7 On-Site Care</h4>
+      <p>Real humans, real overnight staff. Your pet is never alone. From midnight potty breaks to 6 AM tail wags.</p>
+    </div>
+    <div class="why-card reveal">
+      <span class="why-icon">🌿</span>
+      <h4>1-Acre Play Yard</h4>
+      <p>Turfed outdoor paradise. 6-8 play sessions daily, supervised by our trained team. Room to run, roll, and be a dog.</p>
+    </div>
+    <div class="why-card reveal">
+      <span class="why-icon">💜</span>
+      <h4>Personalized Attention</h4>
+      <p>Every pet gets known by name. We follow your feeding routines, administer meds, and send you updates.</p>
+    </div>
+    <div class="why-card reveal">
+      <span class="why-icon">🧼</span>
+      <h4>Spotless & Safe</h4>
+      <p>Daily deep cleans, air filtration, industry-standard disinfection, and strict vaccination requirements.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="section about-section" id="about">
+  <div class="section-header reveal">
+    <span class="section-label">BEHIND THE SCENES</span>
+    <h2 class="section-title">Our Origin Story</h2>
+    <div class="section-divider"></div>
+  </div>
+  <div class="about-grid">
+    <div class="about-visual reveal">
+      <div class="about-ticket">
+        <div class="ticket-header">ADMIT ONE</div>
+        <div class="ticket-detail">FUR FAMILY CINEMA</div>
+        <div class="ticket-detail">3323 10th St., Lewiston, ID</div>
+        <div class="ticket-big">EST. LOVE</div>
+        <div class="ticket-detail">Boarding | Daycare | Spa | Boutique</div>
+        <div class="ticket-stars">⭐⭐⭐⭐⭐</div>
+        <div class="ticket-detail" style="margin-top:0.5rem;">4.9 on Google Reviews</div>
+      </div>
+    </div>
+    <div class="about-text reveal">
+      <h3>Pets Are Family. Period.</h3>
+      <p>
+        It started with a broken heart. While working as a veterinary assistant, the founder watched sweet souls spend long days in kennels — waiting, watching, hoping for a little affection.
+      </p>
+      <p>
+        That's when the dream began: a place where pets could truly feel <span class="about-highlight">at home</span>. Not just cared for, but <span class="about-highlight">loved</span>. A space to move, play, rest, and connect.
+      </p>
+      <p>
+        Today Fur Family Cinema is more than a pet care facility — it's a community built on compassion, safety, and joy. We've supported rescues whenever we can, because giving back is part of who we are.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- HOURS & CONTACT -->
+<section class="section location-section" id="location">
+  <div class="section-header reveal">
+    <span class="section-label">SHOWTIMES</span>
+    <h2 class="section-title">Hours & Location</h2>
+    <div class="section-divider"></div>
+  </div>
+  <div class="location-grid">
+    <div class="hours-card reveal">
+      <h3>SHOWTIMES</h3>
+      <div class="hours-row"><span class="hours-day">Monday - Friday</span><span class="hours-time">7:00 AM - 7:00 PM</span></div>
+      <div class="hours-row"><span class="hours-day">Saturday</span><span class="hours-time">9:00 AM - 5:00 PM</span></div>
+      <div class="hours-row"><span class="hours-day">Sunday</span><span class="hours-time">3:00 PM - 6:00 PM</span></div>
+      <p class="hours-note">Sundays: Boarding drop-off & pick-up and self-wash only</p>
+    </div>
+    <div class="contact-card reveal">
+      <h3>GET IN TOUCH</h3>
+      <a href="tel:2084139647" class="contact-row"><span class="contact-icon">📞</span> (208) 413-9647</a>
+      <a href="sms:8339782881" class="contact-row"><span class="contact-icon">💬</span> Text: (833) 978-2881</a>
+      <a href="mailto:info@furfamilycinema.com" class="contact-row"><span class="contact-icon">📩</span> info@furfamilycinema.com</a>
+      <div class="contact-row"><span class="contact-icon">📍</span> 3323 10th St., Lewiston, ID 83501</div>
+      <a href="https://www.google.com/maps/place/Fur+Family+Cinema+LLC/@46.3819091,-116.9804323,17z/data=!3m1!4b1!4m6!3m5!1s0x54a04acd00c00001:0x67473646e36bb236" target="_blank" class="contact-row" style="color:var(--gold);font-weight:600;"><span class="contact-icon">🗺️</span> Get Directions</a>
+    </div>
+  </div>
+</section>
+
+<!-- HEALTH REQUIREMENTS -->
+<section class="section health-section" id="health">
+  <div class="section-header reveal">
+    <span class="section-label">YOUR TICKET IN</span>
+    <h2 class="section-title">Health Requirements</h2>
+    <div class="section-divider"></div>
+  </div>
+  <div class="health-grid">
+    <div class="health-card reveal">
+      <h4>🐕 Dogs</h4>
+      <ul>
+        <li>Rabies (current)</li>
+        <li>DHPP / Parvo / Distemper</li>
+        <li>Bordetella</li>
+        <li>Dewormer or negative fecal test</li>
+        <li>16+ weeks & fully vaccinated</li>
+        <li>Spayed/neutered at 12 months (daycare)</li>
+        <li>New rescues: 30 days in home first</li>
+      </ul>
+    </div>
+    <div class="health-card reveal">
+      <h4>🐈 Cats</h4>
+      <ul>
+        <li>Rabies (current)</li>
+        <li>FVRCP</li>
+        <li>Feline Leukemia</li>
+      </ul>
+    </div>
+    <div class="health-card reveal">
+      <h4>📋 How to Submit Records</h4>
+      <ul>
+        <li>Email: info@furfamilycinema.com</li>
+        <li>Upload to the Gingr portal</li>
+        <li>Drop off in person</li>
+        <li>Have your vet send them directly</li>
+        <li>Allow 24-48 hours for vet clinics</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- GINGR APP -->
+<section class="section app-section">
+  <div class="section-header reveal">
+    <span class="section-label">DOWNLOAD THE APP</span>
+    <h2 class="section-title">Your Pet's Backstage Pass</h2>
+    <div class="section-divider"></div>
+  </div>
+  <div class="app-container reveal">
+    <p class="app-desc">Download the Gingr App to book, track, and stay connected with your pet's care. Manage reservations, view updates, and access your pet parent portal — all from your phone.</p>
+
+    <div class="app-stores">
+      <a href="https://apps.apple.com/us/app/gingr-for-pet-parents/id1580056094" class="store-btn" target="_blank">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+        <div class="store-text">
+          <div class="store-small">Download on the</div>
+          <div class="store-name">App Store</div>
+        </div>
+      </a>
+      <a href="https://play.google.com/store/apps/details?id=com.gingrapp.gingr" class="store-btn" target="_blank">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3.18 23.77c-.36-.17-.59-.52-.59-.92V1.15c0-.4.23-.75.59-.92l11.07 11.77L3.18 23.77zM15.58 13.33l2.75 1.59-2.1 2.1-3.43-3.64 2.78-0.05zM15.58 10.67l-2.78-.05 3.43-3.64 2.1 2.1-2.75 1.59zM20.15 13.7l-3.21-1.86 3.21-1.86c.64.37 1.03 1.06 1.03 1.86s-.39 1.49-1.03 1.86zM5.02 1.81l8.95 9.5-2.82 3-8.95-9.5c.48-.48 1.22-.71 2.82-3z"/></svg>
+        <div class="store-text">
+          <div class="store-small">Get it on</div>
+          <div class="store-name">Google Play</div>
+        </div>
+      </a>
+    </div>
+
+    <div class="app-badge">
+      <div class="app-code">820137</div>
+      <div class="app-label">Your Gingr App Code — enter this after downloading</div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section faq-section" id="faq">
+  <div class="section-header reveal">
+    <span class="section-label">THE EXTRAS</span>
+    <h2 class="section-title">Frequently Asked Questions</h2>
+    <div class="section-divider"></div>
+  </div>
+  <div class="faq-container">
+    <div class="faq-item reveal">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        How do I make a reservation?
+        <span class="faq-toggle">+</span>
+      </button>
+      <div class="faq-answer">Call (208) 413-9647 or book online. An account and updated vaccination records are required. You can also use the Gingr app with code 820137.</div>
+    </div>
+    <div class="faq-item reveal">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        What's the difference between boarding and daycare evaluations?
+        <span class="faq-toggle">+</span>
+      </button>
+      <div class="faq-answer">Boarding Evaluation is free — a 20-minute intro to staff, yards, and kennels. Daycare Evaluation costs $35 — a full-day group introduction (drop-off 7-8 AM). Either eval qualifies your dog for boarding.</div>
+    </div>
+    <div class="faq-item reveal">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        What should I bring for boarding?
+        <span class="faq-toggle">+</span>
+      </button>
+      <div class="faq-answer">Dogs: food, treats, toys, medications, leash/harness, and bedding. Cats: food and comfort items. We provide bowls, litter boxes, litter, and food dishes.</div>
+    </div>
+    <div class="faq-item reveal">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        How often does my dog get out during boarding?
+        <span class="faq-toggle">+</span>
+      </button>
+      <div class="faq-answer">6-8 play or potty sessions per day, approximately 15-20 minutes each. Your pup is never just sitting around!</div>
+    </div>
+    <div class="faq-item reveal">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        Do you have breed restrictions?
+        <span class="faq-toggle">+</span>
+      </button>
+      <div class="faq-answer">No breed restrictions. All pets must be safe and non-aggressive with staff. We evaluate every dog individually.</div>
+    </div>
+    <div class="faq-item reveal">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        What forms of payment do you accept?
+        <span class="faq-toggle">+</span>
+      </button>
+      <div class="faq-answer">Cash, credit/debit cards, and checks. Payment is due at pick-up or may be prepaid. We offer discounted daycare packages and a 10% military & senior discount.</div>
+    </div>
+    <div class="faq-item reveal">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        Can I tour the facility?
+        <span class="faq-toggle">+</span>
+      </button>
+      <div class="faq-answer">Absolutely! Drop in during business hours or make an appointment. We love showing off the place.</div>
+    </div>
+    <div class="faq-item reveal">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        Is staff on site overnight?
+        <span class="faq-toggle">+</span>
+      </button>
+      <div class="faq-answer">Yes. We have staff on site 24/7, including dedicated overnight attendants. Your pet is never alone.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CAREERS -->
+<section class="section careers-section" id="careers">
+  <div class="section-header reveal">
+    <span class="section-label">JOIN THE CAST</span>
+    <h2 class="section-title">We're Hiring</h2>
+    <div class="section-divider"></div>
+  </div>
+  <p class="careers-text reveal">
+    We're a locally owned pet care facility built on compassion, structure, and heart.
+    No experience needed — the right attitude matters more than the resume. Show up, love animals, work hard.
+  </p>
+  <div class="perks-row reveal">
+    <div class="perk"><span class="perk-icon">🐾</span> Hands-on animal work</div>
+    <div class="perk"><span class="perk-icon">📚</span> Training provided</div>
+    <div class="perk"><span class="perk-icon">🤝</span> Supportive team</div>
+    <div class="perk"><span class="perk-icon">📅</span> Flexible scheduling</div>
+  </div>
+  <a href="https://docs.google.com/forms/d/e/1FAIpQLSctvPylxVPRquqlwjJb5F96USbiwaQ1d0qMwZwNukgDXE7IRQ/viewform" class="btn-primary reveal" target="_blank">APPLY NOW</a>
+</section>
+
+<!-- SOCIAL / JOIN THE PACK -->
+<section class="social-section">
+  <div class="section-header reveal">
+    <span class="section-label">STAY CONNECTED</span>
+    <h2 class="section-title">Howl at the Moon 🌙</h2>
+    <div class="section-divider"></div>
+  </div>
+  <p class="social-tagline reveal">See what our four-legged guests are up to, share your pet's adventures, and be the first to know about specials and events. We love hearing from you!</p>
+  <div class="social-links reveal">
+    <a href="https://www.facebook.com/Furfamilycinema/" class="social-link" target="_blank">
+      <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+      Facebook
+    </a>
+    <a href="https://www.instagram.com/fur.family.cinema/" class="social-link" target="_blank">
+      <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+      Instagram
+    </a>
+    <a href="https://www.yelp.com/biz/fur-family-cinema-lewiston" class="social-link" target="_blank">
+      <svg viewBox="0 0 24 24"><path d="M20.16 12.594l-4.995 1.433c-.96.276-1.74-.8-1.176-1.63l2.926-4.308c.564-.83 1.956-.54 2.1.438l.54 3.635c.072.484-.12.96-.54 1.2l.145-.768zm-8.566 5.287l-1.074-5.06c-.204-.96 1.044-1.56 1.884-.912l4.356 3.36c.84.648.48 1.956-.54 1.98l-3.648.06c-.48.012-.84-.264-.96-.672l-.018-.756zm-1.14-8.33L6.35 5.757c-.744-.696-.12-1.896.936-1.812l5.148.408c.528.042.888.444.888.972v4.746c0 1.02-1.332 1.452-1.92.624l.052.256zm-4.15 3.236l-3.636-.528c-.996-.144-1.284-1.536-.432-2.1l4.308-2.856c.852-.564 1.884.252 1.56 1.236l-1.452 4.032c-.168.48-.588.768-1.08.72l.732-.504zm2.034 6.45l-2.01 3.09c-.564.87-1.98.588-2.136-.426l-.756-5.148c-.078-.528.204-.996.672-1.14l4.92-1.5c.972-.3 1.74.84 1.164 1.716l.146-.592z"/></svg>
+      Yelp
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="footer-logo-row"><img src="logo.png" alt="Fur Family Cinema"><span>FUR FAMILY CINEMA</span></div>
+      <p>Boarding, Daycare, Spa & Boutique in Lewiston, Idaho. Where fun is off the leash since day one.</p>
+      <div class="footer-social">
+        <a href="https://www.facebook.com/Furfamilycinema/" target="_blank" aria-label="Facebook">
+          <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        </a>
+        <a href="https://www.instagram.com/fur.family.cinema/" target="_blank" aria-label="Instagram">
+          <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+        </a>
+        <a href="https://www.yelp.com/biz/fur-family-cinema-lewiston" target="_blank" aria-label="Yelp">
+          <svg viewBox="0 0 24 24"><path d="M20.16 12.594l-4.995 1.433c-.96.276-1.74-.8-1.176-1.63l2.926-4.308c.564-.83 1.956-.54 2.1.438l.54 3.635c.072.484-.12.96-.54 1.2l.145-.768zm-8.566 5.287l-1.074-5.06c-.204-.96 1.044-1.56 1.884-.912l4.356 3.36c.84.648.48 1.956-.54 1.98l-3.648.06c-.48.012-.84-.264-.96-.672l-.018-.756zm-1.14-8.33L6.35 5.757c-.744-.696-.12-1.896.936-1.812l5.148.408c.528.042.888.444.888.972v4.746c0 1.02-1.332 1.452-1.92.624l.052.256zm-4.15 3.236l-3.636-.528c-.996-.144-1.284-1.536-.432-2.1l4.308-2.856c.852-.564 1.884.252 1.56 1.236l-1.452 4.032c-.168.48-.588.768-1.08.72l.732-.504zm2.034 6.45l-2.01 3.09c-.564.87-1.98.588-2.136-.426l-.756-5.148c-.078-.528.204-.996.672-1.14l4.92-1.5c.972-.3 1.74.84 1.164 1.716l.146-.592z"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>QUICK LINKS</h4>
+      <a href="#services">Services</a>
+      <a href="#spa">Spa & Self-Wash</a>
+      <a href="#prices">Pricing</a>
+      <a href="#about">About Us</a>
+      <a href="#location">Hours & Location</a>
+      <a href="#health">Health Requirements</a>
+      <a href="#faq">FAQ</a>
+      <a href="#careers">Careers</a>
+    </div>
+    <div class="footer-col">
+      <h4>CONTACT</h4>
+      <a href="tel:2084139647">📞 (208) 413-9647</a>
+      <a href="sms:8339782881">💬 (833) 978-2881</a>
+      <a href="mailto:info@furfamilycinema.com">📩 info@furfamilycinema.com</a>
+      <a href="https://www.google.com/maps/place/Fur+Family+Cinema+LLC/@46.3819091,-116.9804323,17z/data=!3m1!4b1!4m6!3m5!1s0x54a04acd00c00001:0x67473646e36bb236" target="_blank">📍 3323 10th St., Lewiston, ID</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2026 Fur Family Cinema. Made with <span class="hearts">&#10084;</span> by <a href="https://www.kd70.com" target="_blank" style="color:#5CE0D8;">KD70</a> in Clarkston.</p>
+  </div>
+</footer>
+
+<script>
+// ========== STARS ==========
+const starsEl = document.getElementById('stars');
+for (let i = 0; i < 60; i++) {
+  const star = document.createElement('div');
+  star.classList.add('star');
+  star.style.left = Math.random() * 100 + '%';
+  star.style.top = Math.random() * 100 + '%';
+  star.style.animationDelay = Math.random() * 3 + 's';
+  star.style.animationDuration = (2 + Math.random() * 3) + 's';
+  starsEl.appendChild(star);
+}
+
+// ========== REMOVE CURTAIN ==========
+setTimeout(() => {
+  const curtain = document.getElementById('curtain');
+  if (curtain) curtain.style.display = 'none';
+}, 3000);
+
+// ========== SCROLL REVEAL ==========
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ========== FAQ TOGGLE ==========
+function toggleFaq(btn) {
+  const item = btn.parentElement;
+  const wasOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+  if (!wasOpen) item.classList.add('open');
+}
+
+// ========== MOBILE NAV ==========
+function toggleNav() {
+  document.getElementById('navLinks').classList.toggle('open');
+}
+
+// Close mobile nav on link click
+document.querySelectorAll('.nav-links a').forEach(a => {
+  a.addEventListener('click', () => {
+    document.getElementById('navLinks').classList.remove('open');
+  });
+});
+
+// ========== NAVBAR HIDE ON SCROLL ==========
+let lastScroll = 0;
+window.addEventListener('scroll', () => {
+  const currentScroll = window.pageYOffset;
+  const navbar = document.getElementById('navbar');
+  if (currentScroll > lastScroll && currentScroll > 80) {
+    navbar.style.transform = 'translateY(-100%)';
+  } else {
+    navbar.style.transform = 'translateY(0)';
+  }
+  lastScroll = currentScroll;
+});
+</script>
+
+</body>
+</html>
